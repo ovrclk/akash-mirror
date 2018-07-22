@@ -27,7 +27,9 @@ function run() {
   set -o pipefail
   trap finish EXIT
 
-  info "Mirroring ${domain} to AkashTest"
+  [[ "${url}" ]] || url=${domain}
+
+  info "Deploying ${domain} (mirror) to Akash TestNet"
   img="${imgroot}/demo-${domain}"
   akash_conf="${workdir}/akash.yml"
   app_endpoint="${domain}.147-75-70-13.aksh.io"
@@ -48,23 +50,11 @@ function checkdeps() {
   [ -n "$(command -v realpath)" ] || abort "realpath is not found in PATH"
 }
 
-function depid() {
-  [ -f ${akash_log} ] && cat ${akash_log} | head -1
-}
-
-function deployment-create() {
-  log "[begin] deployment-create: Deploying to Akash (${img})"
-  akash deployment create ${akash_conf} -k gosuri > ${akash_log} || abort "Unable to deploy"
-  log "[done] deployment-create: deployment successful ($(depid))"
-}
-
-function checkperm() {
-  log "[begin] check-perm: Verify access to image (${img})"
-  docker ps -a | grep ${dockerctr} | debug && docker kill ${dockerctr}
-  docker run --rm --privileged --name ${dockerctr} -d docker:stable-dind 2>&1 | debug
-  errmsg="\nUnable to pull image (${img}).\nThe current version of AkashNet only support public images.\nPlease ensure the repository is available publicly."
-  docker run --rm --link ${dockerctr}:docker docker:edge pull ${img} 2>&1 | debug || abort ${errmsg}
-  log "[done] check-perm: Image (${img}) is ready for deployment"
+function mirror() {
+  log "[begin] download: ${url} -> ${mirror_dir}"
+  mkdir -p ${mirror_dir} ${mirror_log_dir}
+  httrack ${url} -O ${mirror_dir} -q
+  log "[done] download: ${url} -> ${mirror_dir}"
 }
 
 function makeimg() {
@@ -84,12 +74,15 @@ function pushimg() {
   log "[done] push-image: ${img}"
 }
 
-
-function pushimg() {
-  log "[begin] push-image: (${img})"
-  docker push ${img}
-  log "[done] push-image: (${img})"
+function checkperm() {
+  log "[begin] check-perm: Verify access to image (${img})"
+  docker ps -a | grep ${dockerctr} | debug && docker kill ${dockerctr}
+  docker run --rm --privileged --name ${dockerctr} -d docker:stable-dind 2>&1 | debug
+  errmsg="\nUnable to pull image (${img}).\nThe current version of AkashNet only support public images.\nPlease ensure the repository is available publicly."
+  docker run --rm --link ${dockerctr}:docker docker:edge pull ${img} 2>&1 | debug || abort ${errmsg}
+  log "[done] check-perm: Image (${img}) is ready for deployment"
 }
+
 
 function makeconf() {
   cat > ${akash_conf} <<EOF
@@ -127,11 +120,14 @@ deployment:
 EOF
 }
 
-function mirror() {
-  log "[begin] mirroring: ${domain} -> ${mirror_dir}"
-  mkdir -p ${mirror_dir} ${mirror_log_dir}
-  httrack gregosuri.com -O ${mirror_dir},${mirror_log_dir}
-  log "[done] mirroring: ${domain} -> ${mirror_dir}"
+function deployment-create() {
+  log "[begin] deployment-create: Deploying to Akash (${img})"
+  akash deployment create ${akash_conf} -k ${key} > ${akash_log} || abort "Unable to deploy"
+  log "[done] deployment-create: deployment successful ($(depid))"
+}
+
+function depid() {
+  [ -f ${akash_log} ] && cat ${akash_log} | head -1
 }
 
 function debug() {
@@ -253,6 +249,12 @@ function parseopts() {
     "u" | "url" )
       url=${values[${index}]}
       ;;
+    "k" | "key" )
+      key=${values[${index}]}
+      ;;
+    "i" | "image" )
+      key=${values[${index}]}
+      ;;
     "V" | "verbose" )
       verbose=1
       ;;
@@ -323,7 +325,7 @@ function help() {
   echo "Options:"
   echo "  -d DIR --dir=DIR            Stage the files in DIR. [default: ${workdir}]"
   echo "  -u URL --url=URL            Use URL if different from DOMAIN."
-  echo "  -k KEY --url=KEY            Use KEY for deploying. [default: ${key}]"
+  echo "  -i IMAGE --image=image      Use IMAGE as tag for container. [default: ${imgroot}/demo-DOMAIN]"
   echo "  --rm=false                  Always keep the files after the run. [default: true]"
   echo "  -V --verbose                Run in verbose mode."
   echo "  -h --help                   Display this help message."

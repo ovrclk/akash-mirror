@@ -4,7 +4,7 @@ akash-mirror is a helper utility to deploy a static mirror of any website on to 
 
 ## Usage
 
-You can deploy a static mirror of a website by running `akash-mirror DOMAIN`, for eg: `akash-mirror gregosuri.com`. The mirrored site will be deployed to the AkashTestNet and will use the tokens from your local wallet to pay. By default, it uses `master` key which can be changed by specifying `-k KEY`.
+You can deploy a static mirror of a website by running `akash-mirror DOMAIN`, for eg: `akash-mirror gregosuri.com`. The mirrored site will be deployed to the Akash TestNet and will use the tokens from your local wallet to pay. By default, it uses `master` key which can be changed by specifying `-k KEY`.
 
 `akash-mirror -h` will display the below help:
 
@@ -33,8 +33,8 @@ Options:
 
 ## From source
 
-```
+```sh
 $ git clone git@github.com:ovrclk/akash-mirror.git
 $ cd test-runner
 $ make install
-``
+```
