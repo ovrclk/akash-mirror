@@ -26,7 +26,7 @@ $ akash-mirror -k gosuri -u https://akash.network akash.network
     akash-mirror:
     akash-mirror: [check-perm: begin] verify access to image (quay.io/ovrclk/demo-akash.network)
     akash-mirror: [check-perm done]: image (quay.io/ovrclk/demo-akash.network) is ready for deployment
-    akash-mirror: [gen-conf: begin] creating akash manifest (/Users/gosuri/code/go/src/github.com/ovrclk/tools/hashed/akashnet/akash.yml)
+    akash-mirror: [make-conf: begin] creating akash manifest (/Users/gosuri/code/go/src/github.com/ovrclk/tools/hashed/akashnet/akash.yml)
 ==> akash-mirror: [make-conf: done] successfully creating akash manifest (/Users/gosuri/code/go/src/github.com/ovrclk/tools/hashed/akashnet/akash.yml)
     akash-mirror:
     akash-mirror: 	$ cat > akash.yml <<EOF

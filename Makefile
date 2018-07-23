@@ -1,6 +1,6 @@
 SHELL   = /bin/sh
 PREFIX  = /usr/local
-SOURCES	= akash-mirror.bash
+SOURCES	= prelude.bash main.bash
 PROGRAM = akash-mirror
 
 execdir=$(PREFIX)/bin

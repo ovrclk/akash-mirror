@@ -1,6 +1,5 @@
-#!/usr/bin/env bash
 PROGRAM=${0##*/}
-MAJOR_VER='0.0.1'
+MAJOR_VER='0.0.2'
 MINOR_VER=''
 VERSION="${MAJOR_VER}${MINOR_VER}"
 
@@ -93,7 +92,7 @@ function checkperm() {
 }
 
 function makeconf() {
-  log "[gen-conf: begin] creating akash manifest (${akash_conf})"
+  log "[make-conf: begin] creating akash manifest (${akash_conf})"
   cat > ${akash_conf} <<EOF
 ---
 services:
@@ -299,8 +298,7 @@ function finish() {
   local red=$(tput setaf 1)
   local reset="\033[0m"
   local msg="${red}$@${reset}"
-  
-  log "[finish begin]"
+  log "[finish: begin]"
 
   # stop support services
   log "[finish kill container]: ${dockerctr}"
@@ -312,6 +310,7 @@ function finish() {
     log "removing cache under ${workdir}"
     rm -rf 
   fi
+  log "[finish: done]"
 
   if [ ${exitcode} -eq 0 ]; then
     info-success "\nDeployment Successful"
