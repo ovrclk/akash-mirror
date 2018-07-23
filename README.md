@@ -8,16 +8,16 @@ You can deploy a static mirror of a website by running `akash-mirror DOMAIN`, fo
 
 `akash-mirror -h` will display the below help:
 
-```sh
+```
 akash-mirror 0.0.1
 
 Usage:
   akash-mirror [options] DOMAIN
 
 Options:
-  -d DIR --dir=DIR            Stage the files in DIR. [default: /Users/gosuri/code/go/src/github.com/ovrclk/tools/akashify]
+  -d DIR --dir=DIR            Stage the files in DIR. [default: .]
   -u URL --url=URL            Use URL if different from DOMAIN.
-  -k KEY --url=KEY            Use KEY for deploying. [default: help]
+  -i IMAGE --image=image      Use IMAGE as tag for container. [default: quay.io/ovrclk/demo-DOMAIN]
   --rm=false                  Always keep the files after the run. [default: true]
   -V --verbose                Run in verbose mode.
   -h --help                   Display this help message.
@@ -25,7 +25,7 @@ Options:
 ```
 
 # Requirements
-
+- Akash 0.2.2
 - HTTrack ~> 3.49-2
 - Docker ~> 18.03
 

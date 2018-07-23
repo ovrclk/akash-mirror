@@ -122,7 +122,7 @@ EOF
 
 function deployment-create() {
   log "[begin] deployment-create: Deploying to Akash (${img})"
-  akash deployment create ${akash_conf} -k ${key} > ${akash_log} || abort "Unable to deploy"
+  akash deployment create ${akash_conf} -k ${key} -w > ${akash_log} || abort "Unable to deploy"
   log "[done] deployment-create: deployment successful ($(depid))"
 }
 
