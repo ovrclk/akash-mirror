@@ -34,33 +34,7 @@ $ akash-mirror -k gosuri -u https://akash.network akash.network
 services:
   web:
     image: quay.io/ovrclk/demo-akash.network
-    expose:
-      - port: 80
-        as: 80
-        accept:
-          - akash.network.147.75.70.13.nip.io
-          - akash.network.147-75-70-13.aksh.io
-        to:
-          - global: true
-
-profiles:
-  compute:
-    web:
-      cpu: "0.25"
-      memory: "1024Mi"
-      disk: "5Gi"
-  placement:
-    westcoast:
-      attributes:
-        region: us-west
-      pricing:
-        web: 100
-
-deployment:
-  web:
-    westcoast:
-      profile: web
-      count: 1
+  ...
 EOF
     akash-mirror:
     akash-mirror: [deployment-create: begin] deploying to akash testnet (/Users/gosuri/code/go/src/github.com/ovrclk/tools/hashed/akashnet/akash.yml)
@@ -81,9 +55,9 @@ Manifest:   /Users/gosuri/code/go/src/github.com/ovrclk/tools/hashed/akashnet/ak
 Image:      quay.io/ovrclk/demo-akash.network
 ```
 
-### Help
+### Getting help
 
-`akash-mirror --help` will display the below help:
+Running `akash-mirror --help` will display the below help:
 
 ```
 akash-mirror 0.0.1
@@ -101,13 +75,20 @@ Options:
   -v --version                Display the version number.
 ```
 
-# Requirements
+# Installation
+
+## Requirements
 
 - Akash 0.2.2
 - HTTrack ~> 3.49-2
 - Docker ~> 18.03
 
-# Installation
+## For OSX (Mac)
+
+```sh
+$ brew tap ovrclk/tap
+$ brew install akash-mirror
+```
 
 ## From source
 
