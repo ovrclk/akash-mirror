@@ -86,8 +86,7 @@ Options:
 ## For OSX (Mac)
 
 ```sh
-$ brew tap ovrclk/tap
-$ brew install akash-mirror
+$ brew install ovrclk/tap/akash-mirror
 ```
 
 ## From source
